@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "Zora Backend API",
+    "description": "Collection for testing the Zora Backend APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the API is up and running"
+      },
+      "response": []
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User by Wallet Address (or Create)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/by-wallet?walletAddress=0x1234567890abcdef1234567890abcdef12345678",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "by-wallet"],
+              "query": [
+                {
+                  "key": "walletAddress",
+                  "value": "0x1234567890abcdef1234567890abcdef12345678",
+                  "description": "Ethereum wallet address"
+                }
+              ]
+            },
+            "description": "Retrieves a user by their wallet address or creates a new user if one doesn't exist"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"mintingFrequency\": \"daily\",\n    \"isAutoMintEnabled\": true,\n    \"nextMintingTimestamp\": \"2025-04-12T12:00:00.000Z\",\n    \"isSentimentAnalysisEnabled\": true,\n    \"basePrompt\": \"Generate a beautiful landscape with mountains\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:walletAddress",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", ":walletAddress"],
+              "variable": [
+                {
+                  "key": "walletAddress",
+                  "value": "0x1234567890abcdef1234567890abcdef12345678",
+                  "description": "Ethereum wallet address"
+                }
+              ]
+            },
+            "description": "Updates user preferences and settings"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:walletAddress",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", ":walletAddress"],
+              "variable": [
+                {
+                  "key": "walletAddress",
+                  "value": "0x1234567890abcdef1234567890abcdef12345678",
+                  "description": "Ethereum wallet address"
+                }
+              ]
+            },
+            "description": "Deletes a user by their wallet address"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8008",
+      "type": "string",
+      "description": "Base URL for the Zora Backend API"
+    }
+  ]
+}
