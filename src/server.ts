@@ -11,7 +11,8 @@ import { connectDB } from './config/database';
 import { errorHandler } from './middlewares/errorMiddleware';
 import userRoutes from './routes/userRoutes';
 import logger from './utils/logger';
-
+import coinRoutes from './routes/coinRoutes';
+import contentRoutes from './routes/contentRoutes';
 // Initialize express app
 const app: Application = express();
 
@@ -28,6 +29,8 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/coins', coinRoutes);
+app.use('/api/content', contentRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

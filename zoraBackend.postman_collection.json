@@ -101,6 +101,98 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Coins",
+      "item": [
+        {
+          "name": "Create Coin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"walletAddress\": \"0x1234567890abcdef1234567890abcdef12345678\",\n    \"name\": \"My Test Coin\",\n    \"symbol\": \"MTC\",\n    \"description\": \"This is a test coin created via the API\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/coins/coin",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "coins", "coin"]
+            },
+            "description": "Creates a new coin on Zora with the specified parameters"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "item": [
+        {
+          "name": "Generate Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "prompt",
+                  "value": "A beautiful sunset over a mountain range",
+                  "type": "text",
+                  "description": "Text prompt for image generation"
+                },
+                {
+                  "key": "pictures",
+                  "value": "https://example.com/image1.jpg",
+                  "type": "text",
+                  "description": "URL to reference image"
+                },
+                {
+                  "key": "pictures",
+                  "value": "https://example.com/image2.jpg",
+                  "type": "text",
+                  "description": "URL to another reference image (optional)"
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "description": "Reference image file",
+                  "src": null
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "description": "Another reference image file (optional)",
+                  "src": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/content/content",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "content", "content"]
+            },
+            "description": "Generates an image based on the provided prompt and reference images"
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "event": [
@@ -124,7 +216,13 @@
       "key": "baseUrl",
       "value": "http://localhost:8008",
       "type": "string",
-      "description": "Base URL for the Zora Backend API"
+      "description": "Base URL for the Zora Backend API (Local Development)"
+    },
+    {
+      "key": "prodUrl",
+      "value": "https://zora.devanshkaria.dev",
+      "type": "string",
+      "description": "Production Base URL for the Zora Backend API"
     }
   ]
 }

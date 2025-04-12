@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import User, { IUser } from '../models/User';
 import { asyncHandler } from '../middlewares/asyncHandler';
-
+import { Address } from 'viem';
 /**
  * @desc    Get all users
  * @route   GET /api/users
@@ -24,15 +24,18 @@ export const getUserByWalletOrCreate = asyncHandler(async (req: Request, res: Re
     throw new Error('Wallet address query parameter is required');
   }
 
+
   let user = await User.findOne({ walletAddress: walletAddress as string });
 
   if (user) {
     // User found
     res.status(200).json(user);
+    
   } else {
     // User not found, create a new one
     user = await User.create({ walletAddress });
     res.status(201).json(user); // Return newly created user with default values
+
   }
 });
 
