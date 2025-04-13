@@ -22,11 +22,11 @@ connectDB();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: '*' })); // Explicitly allow all origins
 app.use(helmet());
 app.use(compression());
 app.use(morgan('dev'));
 
+app.use(cors({ origin: '*' }));
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/coins', coinRoutes);

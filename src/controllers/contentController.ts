@@ -20,22 +20,37 @@ const uploadImageToIpfs = async (image: Buffer, name: string) => {
 
 
 export const generateImage = async (req: Request, res: Response) => {
-  const { pictures, prompt } = req.body;
-  console.log(pictures);
+  const { image, prompt } = req.body;
+  console.log(image);
   if (typeof prompt !== "string") {
     return res.status(400).json({ error: "Prompt must be a string" });
   }
-  let images: Buffer[] = [];
-  if (Array.isArray(pictures) && pictures.length >= 1) {
-    images = await Promise.all(pictures.map(async (picture) => {
-      const response = await fetch(picture);
-      const arrayBuffer = await response.arrayBuffer();
-      return Buffer.from(arrayBuffer);
-    }));
-  }
+
   // TODO: Implement the api of AI Agent
   // const image: Buffer = Buffer.from([]);
-  const imageUri = await uploadImageToIpfs(images[0], "Image name");
+  const imageUri = await uploadImageToIpfs(image, "Image name");
+  const metadata = {
+    name: "Image name",
+    description: "Image description",
+    image: "ipfs://" + imageUri,
+    properties: {
+      "category": "social"    
+    }
+  }
+  var ipfsid = await uploadMetadataToIpfs(metadata);
+  
 
-  return res.json({ msg:"Image generated successfully", data: { image: images[0], ipfsUri: `ipfs://${imageUri}`, metadata: { name: "Image name", description: "Image description" } } });
+  return res.json({ msg:"Image generated successfully", data: { image: image, ipfsUri: `ipfs://${ipfsid}`, metadata: {name: "Image name", description: "Image description"} } });
 };
+
+async function uploadMetadataToIpfs(metadata: { name: string; description: string; image: any; properties: { category: string; }; }) {
+  try {
+    console.log("Uploading metadata:", metadata);
+    const upload = await pinata.upload.public.json(metadata);
+    console.log("Metadata upload result:", upload);
+    return upload.cid;
+  } catch (error) {
+    console.error("Error uploading metadata to IPFS:", error);
+    throw error;
+  }
+}
